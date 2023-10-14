@@ -102,3 +102,4 @@ tag_archive:
   path: /tags/
 
 future: true
+classes: wide
