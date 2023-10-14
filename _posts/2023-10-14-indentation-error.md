@@ -1,6 +1,7 @@
 ---
 title: "[Github 블로그] Github Action 에러 : did not find expected key while parsing a block mapping at line 16 column 1 (Psych::SyntaxError)"
 date: 2023-10-14T22:30:30-04:00
+published: true
 tags:
   - Error handling
   - Github 블로그
