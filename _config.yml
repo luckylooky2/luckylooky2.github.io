@@ -62,7 +62,7 @@ author:
   avatar: "/assets/images/bio-photo.jpg"
   bio: "My awesome biography constrained to a sentence or two goes here."
   links:
-    - label: "Email"
+ - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       url: mailto:luckylooky2@naver.com
     # - label: "Twitter"
