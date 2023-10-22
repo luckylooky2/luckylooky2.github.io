@@ -109,13 +109,13 @@ author:
   location: "Seoul, Korea"
   email:
   links:
-    - label: "Email"
+    - label: "luckylooky2@naver.com"
       icon: "fas fa-fw fa-envelope-square"
       url: mailto:luckylooky2@naver.com
     # - label: "Twitter"
     #   icon: "fab fa-fw fa-twitter-square"
     #   url: "https://twitter.com/"
-    - label: "GitHub"
+    - label: "https://github.com/luckylooky2"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/luckylooky2"
 
