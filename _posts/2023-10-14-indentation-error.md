@@ -12,6 +12,8 @@ tags:
   - Error handling
 ---
 
+### 1. 문제 발생
+
 Github 블로그를 `minimal-mistakes`를 이용하여 생성하고, `_config.yml` 파일에서 블로그 세팅을 하였다.
 
 프로필을 변경하고 commit, push를 하였는데 `Github Action`에서 다음과 같은 에러가 발생하였다.
@@ -21,6 +23,8 @@ github-pages 228 | Error:  (/github/workspace/./_config.yml): did not find expec
 
 `parse': (/github/workspace/./_config.yml): did not find expected key while parsing a block mapping at line 16 column 1 (Psych::SyntaxError)
 ```
+
+### 2. 원인
 
 `_config.yml` 파일을 파싱하다가 생기는 문제라는 것을 추측할 수 있다.
 
@@ -34,6 +38,8 @@ github-pages 228 | Error:  (/github/workspace/./_config.yml): did not find expec
 - 단, indentation의 개수는 상관이 없다고 한다. 일반적으로 2칸 또는 4칸을 사용한다.
 
 `links` 블록 아래 `label`, `icon`, `url`은 같은 레벨의 데이터로써, 같은 indentation 위치에 있어야 했지만 그렇지 않아서 에러가 발생하였다.
+
+### 3. 해결
 
 ```yml
 # before
