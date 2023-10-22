@@ -106,7 +106,7 @@ author:
   name: "Lee Chanhyung"
   avatar: "/assets/images/profile.jpeg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio: "세상에 쉬운 일은 없다."
-  location: "Somewhere"
+  location: "Seoul, Korea"
   email:
   links:
     - label: "Email"
