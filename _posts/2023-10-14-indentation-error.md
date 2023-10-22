@@ -1,11 +1,11 @@
 ---
 title: "[Github 블로그] Github Action 에러 : did not find expected key while parsing a block mapping at line 16 column 1 (Psych::SyntaxError)"
 date: 2023-10-14T22:30:30-09:00
-classes: wide
 published: true
+categories:
+  - Github 블로그
 tags:
   - Error handling
-  - Github 블로그
 ---
 
 Github 블로그를 `minimal-mistakes`를 이용하여 막 생성하고, `_config.yml` 파일에서 블로그 세팅을 하였다.
