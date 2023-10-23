@@ -157,11 +157,11 @@ pre {
   font-family: $monospace;
   background-color: #263238;
   color: #b0bec5;
-  border-radius: 3%;
 }
 
 pre {
   overflow-x: auto; /* add scrollbars to wide code blocks*/
+  padding: 5%;
 }
 
 /* horizontal rule */
