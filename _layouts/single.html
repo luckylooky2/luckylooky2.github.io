@@ -44,7 +44,7 @@ breadcrumbs.html %} {% endunless %} {% endif %}
           >
         </h1>
         {% endif %}
-        <p class="page__date">
+        <p class="page__meta">
           <i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> {{
           site.data.ui-text[site.locale].date_label | default: "Updated:" }}
           <time datetime="{{ page.date | date_to_xmlschema }}"
