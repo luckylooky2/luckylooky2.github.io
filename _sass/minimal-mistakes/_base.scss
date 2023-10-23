@@ -155,13 +155,13 @@ kbd,
 samp,
 pre {
   font-family: $monospace;
-  background-color: #263238;
+  background-color: $code-background-color;
+  border-radius: 4px;
   color: azure;
 }
 
 pre {
   overflow-x: auto; /* add scrollbars to wide code blocks*/
-  padding: 3%;
 }
 
 /* horizontal rule */
