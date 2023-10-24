@@ -1,5 +1,5 @@
 ---
-title: "[Github 블로그] Github Action 에러 : did not find expected key while parsing a block mapping (Psych::SyntaxError)"
+title: "[Github 블로그] Github Action 에러; did not find expected key while parsing a block mapping (Psych::SyntaxError)"
 date: 2023-10-14
 published: true
 toc: true
