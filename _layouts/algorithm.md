@@ -7,7 +7,7 @@ toc_sticky: true
 last_modified_at: 2023-10-23
 
 categories:
-  - 알고리즘
+  - Algorithm
 tags:
   - 백준/프로그래머스
 ---
