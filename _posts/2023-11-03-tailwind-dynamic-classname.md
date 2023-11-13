@@ -1,5 +1,5 @@
 ---
-title: "[React] tailwind 동적 클래스 이름 사용하기; tailwindcss, typescript, className"
+title: "[React][Tailwindcss] tailwind 동적 클래스 이름 사용하기; typescript, className, CSS"
 date: 2023-11-03
 published: true
 toc: true
