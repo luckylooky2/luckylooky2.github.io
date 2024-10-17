@@ -19,28 +19,28 @@
                 <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
                 {% for category in site.categories %}
                     {% if category[0] == "Javascript" %}
-                        <li><a href="/categories/Javascript" class="nav__category">Javascript ({{category[1].size}})</a></li>
+                        <li><a href="/categories/javascript" class="nav__category">Javascript ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
             <ul>
                 {% for category in site.categories %}
                     {% if category[0] == "React" %}
-                        <li><a href="/categories/React" class="nav__category">React ({{category[1].size}})</a></li>
+                        <li><a href="/categories/react" class="nav__category">React ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "Algorithm" %}
-                        <li><a href="/categories/Algorithm" class="nav__category">Algorithm ({{category[1].size}})</a></li>
+                    {% if category[0] == "日本語" %}
+                        <li><a href="/categories/japanese" class="nav__category">日本語 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
             <ul>
                 {% for category in site.categories %}
                     {% if category[0] == "Github-블로그" %}
-                        <li><a href="/categories/Github-블로그" class="nav__category">Github 블로그 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/github-blog" class="nav__category">Github 블로그 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
