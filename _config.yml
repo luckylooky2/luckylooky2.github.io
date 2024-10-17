@@ -103,9 +103,9 @@ analytics:
 
 # Site Author
 author:
-  name: "Lee Chanhyung"
+  name: "Chanhyung Lee"
   avatar: "/assets/images/profile.jpeg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio: "안녕하세요. 웹에 관심이 많은 개발자입니다!"
+  bio: "웹과 일본어에 관심이 많은 평범한 개발자의 블로그입니다."
   location: "Seoul, Korea"
   email:
   links:
