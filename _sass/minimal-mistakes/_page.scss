@@ -581,8 +581,7 @@ body {
 .copy-code-button {
   float: right;
   cursor: pointer;
-  background-color: transparent;
-  filter: invert(1);
+  background-color: $code-background-color;
   padding: 5px 5px;
   border-radius: 5px;
   width: 30px;
@@ -591,12 +590,17 @@ body {
   border: none;
 }
 
+.copy-code-image {
+  filter: invert(1);
+}
+
 .copy-code-button:focus {
   outline: none;
 }
 
 .copy-code-button:hover {
-  background-color: white;
+  // 조금 더 어둡게 조정
+  background-color: #0f1214;
 }
 
 .code-header {
