@@ -39,6 +39,8 @@ CSS를 잘 배우는 방법 중 하나는 "관심사를 분리"하는 것이라�
 
 아래와 같은 방식으로 HTML을 작성하는 것은, 스타일에 관한 정보를 CSS로 분리시키지 않고 HTML에서 직접적으로 다루고 있기 때문에 "관심사를 분리"하는 규칙을 어긴 것입니다.
 
+{% include code-header.html %}
+
 ```html
 <style>
   .text-center {
@@ -51,6 +53,8 @@ CSS를 잘 배우는 방법 중 하나는 "관심사를 분리"하는 것이라�
 
 반면에 아래와 같이 클래스 이름을 스타일과 관련없이 짓는다면, HTML 자체를 수정하지 않고도 스타일을 수정할 수 있습니다. 즉, 관심사를 분리할 수 있습니다. "관심사을 분리"하면 **스타일시트를 교체하는 것만으로도 사이트를 완전히 다시 디자인할 수 있다**는 장점이 있습니다. 또한, HTML과 CSS의 관계를 유연하게 만들어 유지보수를 쉽게 합니다.
 
+{% include code-header.html %}
+
 ```html
 <style>
   .greeting {
@@ -62,6 +66,8 @@ CSS를 잘 배우는 방법 중 하나는 "관심사를 분리"하는 것이라�
 ```
 
 하지만 의미론적(semantic) CSS를 적용하여 관심사를 분리하여도, HTML과 CSS 사이에는 분명한 결합이 존재합니다. 아래 CSS 코드에서 `.profile` 클래스 하위의 `img`, `p` 태그는 HTML 구조를 여전히 반영하고 있습니다. 다시 말해, HTML은 CSS에 관심이 없지만 **CSS는 HTML 구조에 매우 관심이 많았습니다.** 의미론적(semantic) CSS를 적용하는 방법이 어쩌면 관심사를 분리하지 않았을 수도 있습니다.
+
+{% include code-header.html %}
 
 ```css
 .profile {
@@ -79,6 +85,8 @@ CSS를 잘 배우는 방법 중 하나는 "관심사를 분리"하는 것이라�
 }
 ```
 
+{% include code-header.html %}
+
 ```html
 <div class="profile">
   <img src="https://cdn.example.com/chanhyle" alt="profile" />
@@ -92,6 +100,8 @@ CSS를 잘 배우는 방법 중 하나는 "관심사를 분리"하는 것이라�
 ### 2. CSS에서 구조를 분리
 
 CSS 파일에서 HTML 구조를 반영하는 문제점을 해결하기 위해, 선택자가 HTML 태그를 직접 가리키도록 클래스를 추가해 보았습니다. Block Element Modifier(BEM) 라고도 부릅니다.
+
+{% include code-header.html %}
 
 ```css
 .profile {
@@ -108,6 +118,8 @@ CSS 파일에서 HTML 구조를 반영하는 문제점을 해결하기 위해, �
   font-size: 1rem;
 }
 ```
+
+{% include code-header.html %}
 
 ```html
 <div class="profile">
@@ -129,6 +141,8 @@ HTML은 이미 스타일에 관심이 없었고, CSS 또한 HTML 구조로부터
 
 첫 번째는 그대로 복사하는 방법입니다. 여전히 관심사는 분리되었지만 재사용이 전혀 되지 않았습니다. 만약 스타일을 일괄적으로 변경해야 하는 경우, 유지보수성이 떨어집니다.
 
+{% include code-header.html %}
+
 ```css
 .article {
   background-color: white;
@@ -145,6 +159,8 @@ HTML은 이미 스타일에 관심이 없었고, CSS 또한 HTML 구조로부터
 }
 ```
 
+{% include code-header.html %}
+
 ```html
 <div class="article">
   <img
@@ -160,6 +176,8 @@ HTML은 이미 스타일에 관심이 없었고, CSS 또한 HTML 구조로부터
 ```
 
 두 번째는 추상화하는 방법입니다. `profile` 과 `article` 은 의미론적 관점에서는 공통점이 없지만, 스타일 관점에서는 공통점이 존재합니다. 따라서 두 클래스를 `media-card` 라는 컨텐츠에 구애받지 않는 클래스(content-agnostic component) 로 추상화하여 재사용성을 확보할 수 있습니다.
+
+{% include code-header.html %}
 
 ```css
 .media-card {
@@ -178,6 +196,8 @@ HTML은 이미 스타일에 관심이 없었고, CSS 또한 HTML 구조로부터
 ```
 
 재사용성 문제는 해결했지만, 이 방법은 관심사가 다시 결합될 수 있는 문제점이 존재합니다. 두 클래스의 스타일이 미래에도 완전히 같다면 다행이겠지만, 둘 중 하나를 변경해야 한다면 어떻게 될까요? 결국에는 HTML에 새로운 클래스를 추가해야 할 것입니다. 즉, **CSS 파일 안에서 해결하지 못하기 때문에 관심사가 다시 결합되었다고 볼 수 있습니다.**
+
+{% include code-header.html %}
 
 ```html
 <div class="media-card">
@@ -225,6 +245,8 @@ Nicolas Gallagher의 [About HTML semantics and front-end Architecture](https://n
 
 예를 들어, `profile` 클래스에 두 가지 버튼, _좋아요_ 버튼과 _닫기_ 버튼을 추가해보겠습니다. 두 버튼이 같은 스타일을 사용한다면, 재사용성을 위해 클래스 이름도 같아야 합니다. 하지만 클래스 이름이 `profile-like-button` 처럼 구체적이기 때문에(다시 말해, 컨텐츠를 기반으로 클래스를 만들었기 때문에) _닫기_ 버튼에 클래스를 재사용할 수 없는 상황이 발생합니다.
 
+{% include code-header.html %}
+
 ```html
 <div class="profile">
   <img
@@ -247,6 +269,8 @@ Nicolas Gallagher의 [About HTML semantics and front-end Architecture](https://n
 
 따라서 위에서 예시로 든 `profile`, `article` 클래스를 `media-card` 클래스로 추상화한 것처럼, 버튼을 재사용하기 위해 추상화(e.g. `btn`)가 필요합니다. 이러한 방식을 사용한다면 클래스를 더 많이 재사용할 수 있으며 새로운 CSS 클래스를 작성할 필요가 없게 됩니다. 비슷한 방식으로 좋아요 기능을 `article` 클래스에서도 재사용하려면, `profile_like` 클래스를 `like` 클래스로 추상화할 수 있을 것입니다. 결과적으로는 아래와 같을 것이고 재사용성을 극대화할 수 있습니다.
 
+{% include code-header.html %}
+
 ```html
 <div class="profile">
   <img
@@ -266,6 +290,8 @@ Nicolas Gallagher의 [About HTML semantics and front-end Architecture](https://n
   <button class="btn">Close</button>
 </div>
 ```
+
+{% include code-header.html %}
 
 ```html
 <div class="article">
@@ -293,6 +319,8 @@ Nicolas Gallagher의 [About HTML semantics and front-end Architecture](https://n
 
 이 문제를 구성의 방법으로 해결하기 위해서는 재사용 가능한 새 클래스 `align-left` 를 추가하는 방법으로 해결할 수 있습니다. 아래는 `like` 클래스를 왼쪽으로 정렬하기 위해 `align-left` 클래스를 추가한 예시입니다.
 
+{% include code-header.html %}
+
 ```css
 .profile {
   background-color: white;
@@ -312,6 +340,8 @@ Nicolas Gallagher의 [About HTML semantics and front-end Architecture](https://n
   text-align: left;
 }
 ```
+
+{% include code-header.html %}
 
 ```html
 <div class="profile">
@@ -347,6 +377,8 @@ left, right와 같은 스타일 정보가 HTML에 나타나는 것은 확실히 
 
 놀라운 점은 아래와 같이 새로운 CSS를 작성하지 않고 유틸리티 클래스만으로도, 완전한 구성 요소를 만들 수 있다는 것이었습니다!
 
+{% include code-header.html %}
+
 ```html
 <div class="card rounded shadow">
   <img class="block fit" src="https://cdn.example.com/chanhyle" alt="profile" />
@@ -370,7 +402,3 @@ left, right와 같은 스타일 정보가 HTML에 나타나는 것은 확실히 
 그럼에도 내가 유틸리티-우선 CSS라고 부르는 이유는 유틸리티 클래스로 모든 것을 작성하고, 반복되는 패턴이 나타날 때만 추출하기 때문입니다. 예를 들어, `profile`과 `article`에 있는 좋아요 컨테이너가 같은 `py-2 px-4 border-r border-dark-soft` 유틸리티 클래스로 구성되어 있다면, `like` 라는 새로운 클래스로 추출하는 방법을 사용할 수 있습니다. 하지만 만약 `like` 클래스를 미리 클래스로 추출해 놓았지만(조기 추상화) 결국 재사용되지 않는다면 낭비일 뿐만 아니라 코드를 복잡하게 만들 수 있습니다. 유틸리티 클래스로 먼저 빌드하고 중복이 발견될 때 클래스로 추출하는 방법을 사용한다면, 조기 추상화는 발생하지 않을 것입니다.
 
 마지막으로 유틸리티 클래스를 사용하는 것이 HTML 요소에 인라인으로 스타일 태그를 추가하는 것과 같다고 생각할 수 있지만, 경험상으로는 매우 다릅니다. 인라인 스타일은 선택하는 값에 제한이 없습니다. 이는 (1) HTML에 의존하는 CSS를 작성할 때 직면하는 문제와 같습니다. 재사용성이 떨어지고 중복된 코드가 많아집니다. 하지만 유틸리티 클래스는 제한된 값 중 하나를 선택하도록 강요하기 때문에 재사용성을 확보할 수 있습니다. 또한 디자인이 더 일관되게 보이는 효과도 얻을 수 있습니다.
-
-## 요약
-
-## Notes

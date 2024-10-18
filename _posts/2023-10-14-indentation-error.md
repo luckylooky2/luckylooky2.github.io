@@ -18,6 +18,8 @@ Github 블로그를 `minimal-mistakes`를 이용하여 생성하고, `_config.ym
 
 프로필을 변경하고 commit, push를 하였는데 `Github Action`에서 다음과 같은 에러가 발생하였다.
 
+{% include code-header.html %}
+
 ```
 github-pages 228 | Error:  (/github/workspace/./_config.yml): did not find expected key while parsing a block mapping at line 16 column 1
 
@@ -40,6 +42,8 @@ github-pages 228 | Error:  (/github/workspace/./_config.yml): did not find expec
 `links` 블록 아래 `label`, `icon`, `url`은 같은 레벨의 데이터로써, 같은 indentation 위치에 있어야 했지만 그렇지 않아서 에러가 발생하였다.
 
 ### 3. 해결
+
+{% include code-header.html %}
 
 ```yml
 # before

@@ -20,56 +20,64 @@ tags:
 
 - (1) `npm`을 이용하여 프로젝트 내부에 패키지를 설치하는 방법
 
-  ```shell
-  # 1. 프로젝트에 devDependencies로 패키지 추가
-  $ npm install -D tailwindcss
+{% include code-header.html %}
 
-  # 2. tailwind.config.js 파일 생성
-  $ npx tailwindcss init
-  ```
+```shell
+# 1. 프로젝트에 devDependencies로 패키지 추가
+npm install -D tailwindcss
 
-  ```js
-  // 3. tailwind.config.js 작성
-  /** @type {import('tailwindcss').Config} */
-  module.exports = {
-    content: ["./src/**/*.{js,jsx,ts,tsx}"],
-    theme: {
-      extend: {},
-    },
-    plugins: [],
-  };
+# 2. tailwind.config.js 파일 생성
+npx tailwindcss init
+```
 
-  // 4. tailwind.css를 작성
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+{% include code-header.html %}
 
-  // 5. App.tsx나 index.tsx에서 tailwind.css를 import
-  import "./tailwind.css";
-  ```
+```js
+// 3. tailwind.config.js 작성
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+// 4. tailwind.css를 작성
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// 5. App.tsx나 index.tsx에서 tailwind.css를 import
+import "./tailwind.css";
+```
 
 - (2) `index.html` script 태그로 CDN에서 가져오는 방법
 
-  ```html
-  <!DOCTYPE html>
-  <html lang="ko">
-    <head>
-      <!-- CDN script 태그를 추가하는 방법-->
-      <script src="https://cdn.tailwindcss.com"></script>
-      <title>42Hello World</title>
-    </head>
-    <body>
-      <noscript>You need to enable JavaScript to run this app.</noscript>
-      <div id="root"></div>
-    </body>
-  </html>
-  ```
+{% include code-header.html %}
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <!-- CDN script 태그를 추가하는 방법-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>42Hello World</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+```
 
 이 있습니다.
 
 첫 번째 방법은 상대적으로 설정이 복잡한 대신, 버전이나 사용자 정의 설정 등 자유도가 높습니다. 반면, 두 번째 방법은 자유도가 낮은 대신에 설치 없이 빠르게 사용할 수 있다는 장점이 있습니다. 개발 환경에서는 간단한 두 번째 방법을 선택하였습니다.
 
 정상적으로 프로젝트에 적용했다면, 아래와 같이 `className`을 이용하여 편리하게 tailwind에서 제공하는 CSS 클래스를 적용할 수 있습니다.
+
+{% include code-header.html %}
 
 ```jsx
 <div className="flex justify-between items-center"></div>
@@ -96,6 +104,8 @@ tags:
 결론적으로 첫 번째 방법(패키지)에서 `grid-cols-{userCountRef.current}` 처럼 클래스 이름을 동적으로 사용하여 문제가 발생했던 것입니다.
 
 작성한 투표 현황 컴포넌트의 타입스크립트 코드는 다음과 같습니다.
+
+{% include code-header.html %}
 
 ```jsx
 // VoteStatusBoard.tsx
@@ -132,6 +142,8 @@ stack overflow 질문 글과 블로그를 통해 [공식 문서](https://tailwin
 
 tailwind는 소스 파일에서 문자열 합성이나 리터럴 템플릿을 사용하지 않은 "완전한 문자열 클래스 이름"만 발견할 수 있다고 설명합니다. 그리고 발견한 클래스로만 CSS 클래스를 생성한다는 내용입니다.
 
+{% include code-header.html %}
+
 ```jsx
 // 잘못된 예시 : 완전한 문자열 className이 아니므로 grid-cols-n 클래스를 생성하지 않습니다.
 <div className={`grid grid-cols-${userCountRef.current}`}></div>
@@ -164,6 +176,8 @@ tailwind는 매우 많은 CSS 클래스가 존재하는데, purge를 통해 <U>�
 
 CDN을 통해서 가져온 [아래 파일](https://cdn.tailwindcss.com/3.3.5)은 동적으로 CSS 클래스를 생성해주는 자바스크립트 코드입니다.
 
+{% include code-header.html %}
+
 ```html
 <script src="https://cdn.tailwindcss.com"></script>
 ```
@@ -187,6 +201,8 @@ CDN을 통해서 가져온 [아래 파일](https://cdn.tailwindcss.com/3.3.5)은
 ![image (2)](https://github.com/luckylooky2/luckylooky2.github.io/assets/85822311/51b4b6d8-ed95-4bfe-951e-272991bca7ee)
 
 투표 현황 컴포넌트에 완전한 클래스 이름을 사용하여 바꾼 코드는 아래와 같습니다. 중복 문자열이 많아져 코드가 길어진 것은 약간 아쉽게 느껴집니다.
+
+{% include code-header.html %}
 
 ```jsx
 // VoteStatusBoard.tsx
@@ -220,6 +236,8 @@ const VoteStatusBoard: FC<Props> = ({ userCount }) => {
 ```
 
 두 번째, `tailwind.config.js` 파일에서 safelist를 설정하는 방법입니다.
+
+{% include code-header.html %}
 
 ```js
 // tailwind.config.js
