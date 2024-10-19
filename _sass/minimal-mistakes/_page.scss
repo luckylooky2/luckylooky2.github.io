@@ -578,6 +578,13 @@ body {
   }
 }
 
+.code-header {
+  position: relative;
+  top: 50px;
+  right: 10px;
+  z-index: 1;
+}
+
 .copy-code-button {
   float: right;
   cursor: pointer;
@@ -590,10 +597,6 @@ body {
   border: none;
 }
 
-.copy-code-image {
-  filter: invert(1);
-}
-
 .copy-code-button:focus {
   outline: none;
 }
@@ -603,9 +606,6 @@ body {
   background-color: #0f1214;
 }
 
-.code-header {
-  position: relative;
-  top: 50px;
-  right: 10px;
-  z-index: 1;
+.copy-code-image {
+  filter: invert(1);
 }
