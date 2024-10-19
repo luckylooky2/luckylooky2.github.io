@@ -1,5 +1,5 @@
 ---
-title: "[React][Tailwindcss] tailwind 동적 클래스 이름 사용하기; typescript, className, CSS"
+title: "[React] TailwindCSS 동적 클래스 이름 사용하기"
 date: 2023-11-03
 published: true
 toc: true
@@ -11,7 +11,8 @@ categories:
 tags:
   - tailwindcss
   - typescript
-  - 42HelloWorld
+  - 42helloworld
+  - dynamic classname
 ---
 
 ## 1. 문제 발생

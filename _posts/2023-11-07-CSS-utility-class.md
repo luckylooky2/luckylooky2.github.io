@@ -1,5 +1,5 @@
 ---
-title: "[React][Tailwindcss] CSS 유틸리티 클래스와 관심사 분리; className, SoC"
+title: "[React] TailwindCSS의 CSS 유틸리티 클래스와 관심사 분리"
 date: 2023-11-13
 published: true
 toc: true
@@ -10,8 +10,10 @@ categories:
   - React
 tags:
   - tailwindcss
-  - CSS
+  - css
   - seperation of concerns
+  - soc
+  - utility class
 ---
 
 _"이 글은 [CSS Utility Classes and "Separation of Concerns"](https://adamwathan.me/css-utility-classes-and-separation-of-concerns/) 글을 번역하여 해석한 글입니다. 해석하는 과정에서 주관적인 견해가 포함되었을 수 있습니다."_

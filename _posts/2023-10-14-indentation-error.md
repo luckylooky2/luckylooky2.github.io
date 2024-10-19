@@ -9,7 +9,9 @@ last_modified_at: 2023-10-23
 categories:
   - Github-블로그
 tags:
-  - Error handling
+  - minimal mistakes
+  - github.io
+  - github action
 ---
 
 ### 1. 문제 발생
