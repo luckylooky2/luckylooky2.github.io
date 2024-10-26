@@ -1,0 +1,232 @@
+---
+title: "[React] useRef 배열이 필요할 땐 Callback ref를 이용하는 것은 어떨까요?"
+date: 2024-10-25
+published: true
+toc: true
+toc_sticky: true
+last_modified_at: 2024-10-26
+categories:
+  - React
+tags:
+  - useRef
+  - Callback ref
+  - Hooks
+---
+
+## 1. DOM 요소에 접근하는 ref를 배열로 사용해야 하는 경우
+
+42helloworld 프로젝트에서 `<video>` 태그를 이용하여 음성 통화 기능을 구현하였어요.
+
+음성 통화는 상대방으로부터 `MediaStream` 객체를 전달받아서 `<video>` 태그의 `src` 속성에 추가하는 방식으로 연결할 수 있어요. `<video>` 태그의 DOM 요소에 직접 접근하고 수정하기 위해서 React의 `useRef` 를 사용했어요.
+
+개인 통화는 `<video>` 태그에 해당하는 `ref` 를 하나만 생성하면 되는데, 그룹 통화는 4인이서 진행되기 때문에 `<video>` 태그에 해당하는 `ref` 3개가 필요했고 배열로 관리하였어요.
+
+**`ref` 를 배열로 사용하는 방법을 두 가지로 생각해봤어요.**
+
+1. `ref<Element>` 를 요소로 하는 배열 (useRef 배열로 표기)
+2. `Element` 를 요소로 하는 배열을 `ref` 로 사용 (Element 배열로 표기)
+
+{% include code-header.html %}
+
+```tsx
+// 1. useRef 배열
+const videoRefs: RefObject<HTMLVideoElement>[] = [
+  useRef<HTMLVideoElement>(null),
+  useRef<HTMLVideoElement>(null),
+  useRef<HTMLVideoElement>(null),
+];
+
+// 2. Element 배열
+const videoRefs: MutableRefObject<HTMLVideoElement[]> = useRef<
+  HTMLVideoElement[]
+>([]);
+```
+
+두 가지 방법을 둘러보면서 어떤 방법이 가장 좋은지 알아보려고 해요.
+
+## 2. useRef 배열
+
+먼저 useRef 배열은 `ref` 객체를 요소로 하는 배열을 사용해요.
+
+{% include code-header.html %}
+
+```tsx
+const videoRefs = [
+  useRef<HTMLVideoElement>(null),
+  useRef<HTMLVideoElement>(null),
+  useRef<HTMLVideoElement>(null),
+];
+```
+
+다음으로 `ref` 객체를 각각의 `<video>` 태그에 부착해요.
+
+{% include code-header.html %}
+
+```tsx
+return (
+  <div className="h-[15%] flex flex-col justify-evenly">
+    {callInfo.opponent?.map((v, i) => (
+      <video
+        key={`opponentVideo-${v.roomName}-${i}`}
+        width={1}
+        height={1}
+        playsInline
+        autoPlay
+        muted={false}
+        ref={videoRefs[i]}
+      />
+    ))}
+  </div>
+);
+```
+
+마지막으로 서버로부터 받은 MediaStream 객체를 useRef 배열에 접근하여 할당해요. 요소가 `ref` 객체이기 때문에 인덱스로 접근한 후, current에 접근합니다.
+
+{% include code-header.html %}
+
+```tsx
+peer[i].on("stream", (currentStream) => {
+  videoRefs[i].current.srcObject = currentStream;
+});
+```
+
+이렇게 하면 useRef 배열에 각각의 MediaStream 객체를 할당할 수 있고, 정상적으로 동작을 해요.
+
+하지만 위의 코드는 개인 통화를 하더라도 고정적으로 3개의 `ref` 객체가 생성되어 비효율적이라는 문제점이 있어요. 그리고 향후에 통화 가능 인원이 더 늘어난다면, 더 많은 `ref` 객체를 고정적으로 생성해야 하기 때문에 비효율성이 커지는 문제가 발생할 수 있어요.
+
+그러면 최대 인원수를 기준으로 `ref` 객체를 생성하는 것이 아니라, 반복문으로 필요한 만큼만 생성하는 방법은 어떨까요?
+
+{% include code-header.html %}
+
+```tsx
+const totalNum = 3;
+const videoRefs: RefObject<HTMLVideoElement>[] = [];
+
+for (let i = 0; i < totalNum; i++) {
+  const ref = useRef<HTMLVideoElement>(null);
+  videoRefs.push(ref);
+}
+```
+
+위의 코드는 결과적으로 이전 코드와 같아요. 동작도 마찬가지로 정상적으로 잘 됩니다. 하지만 이 방법은 `useRef` 훅을 반복문 내부에서 호출하고 있기 때문에 지양해야 해요.
+
+> Hook 사용하기 ([React 공식 문서](https://ko.react.dev/learn#using-hooks))<br/><br/>
+> use로 시작하는 함수를 Hook이라고 합니다. useState는 React에서 제공하는 내장 Hook입니다. 다른 내장 Hook은 API 레퍼런스에서 찾아볼 수 있습니다. 또한 기존의 것들을 조합하여 자신만의 Hook을 작성할 수도 있습니다.<br/>
+> Hook은 다른 함수보다 더 제한적입니다. **컴포넌트(또는 다른 Hook)의 상단에서만 Hook을 호출할 수 있습니다.** 조건이나 반복에서 useState를 사용하고 싶다면 새 컴포넌트를 추출하여 그곳에 넣으세요.
+
+이와 관련하여 React 공식 문서에서는 조건문이나 반복문 안에서 훅을 호출하지 않을 것을 권장하고 있어요.
+
+훅은 내부적으로 호출 순서에 따라 연결 리스트로 저장되는데, 리렌더링이 될 때마다 연결 리스트가 달라지게 되면 예기치 않은 버그를 초래할 수 있다고 해요. 그렇기 때문에 훅은 항상 실행 순서를 보장받을 수 있는 컴포넌트 최상단에 선언되어 있어야 해요.
+
+이런 관점에서 정상적으로 동작하더라도 훅의 규칙을 깨면서까지 사용하는 것은 좋지 않다고 생각해요.
+
+## 3. Element 배열
+
+이번에는 Element 배열의 경우를 볼게요.
+
+먼저 Element를 요소로 하는 배열을 생성하고, 배열 자체를 `ref` 로 만들어요.
+
+{% include code-header.html %}
+
+```tsx
+const videoRefs = useRef<HTMLVideoElement[]>([]);
+```
+
+다음으로 배열 자체가 `ref` 객체이므로 current에 먼저 접근한 후 인덱스로 접근해요.
+
+{% include code-header.html %}
+
+```tsx
+peer[i].on("stream", (currentStream) => {
+  videoRefs.current[i].srcObject = currentStream;
+});
+```
+
+마지막으로 배열의 요소를 각각의 `<video>` 태그에 부착하려고 하는데, 아래처럼 오류가 발생해요.
+
+{% include code-header.html %}
+
+```tsx
+return (
+  <div className="h-[15%] flex flex-col justify-evenly">
+    {callInfo.opponent?.map((v, i) => (
+      <video
+        key={`opponentVideo-${v.roomName}-${i}`}
+        width={1}
+        height={1}
+        playsInline
+        autoPlay
+        muted={false}
+        // Type 'HTMLVideoElement' is not assignable to type 'LegacyRef<HTMLVideoElement> | undefined'
+        ref={videoRefs.current[i]}
+      />
+    ))}
+  </div>
+);
+```
+
+ref 속성에 `ref` 객체를 전달해야 하는데 `HTMLVideoElement`를 전달하고 있어서 발생하는 오류에요.
+
+위의 코드에서는 `<video>` 요소는 총 3개이고 각각의 요소에 연결되어야 하는 `ref` 객체의 개수도 3개가 되어야 해요. 하지만 현재 `ref` 객체는 Element 배열 1개밖에 없기 때문에, 적절하게 ref 속성에 값을 전달할 수 없어요.
+
+**이 때, Callback ref를 활용하면 이 상황을 해결할 수 있어요.**
+
+Callback ref란 `ref` 를 콜백 함수 형태로 설정하여 DOM 요소를 참조하는 방식이에요. 더 유연한 방식으로 `ref` 를 사용할 수 있어요.
+
+ref 속성에 콜백 함수를 전달하게 되면, 이 콜백이 호출되는 시점에 React는 콜백 함수 ref 인자에 실제 DOM 요소의 정보를 전달해줘요. `ref` 변수를 생성하고 지정하지 않아도 DOM 요소를 다룰 수 있는 것이죠.
+
+{% include code-header.html %}
+
+```tsx
+function MyComponent() {
+  // 콜백이 호출되는 시점에 React는 ref 인자에 실제 DOM 요소의 정보를 전달해줘요.
+  const callbackRef = (ref) => {
+    console.log(ref); // <video width="1" height="1" playsinline autoplay ></video>
+  };
+
+  return <div ref={callbackRef}>Hello</div>;
+}
+```
+
+이러한 Callback ref의 동작을 이용하면 아래처럼 간단하게 처리할 수 있어요.
+
+{% include code-header.html %}
+
+```tsx
+return (
+  <div className="h-[15%] flex flex-col justify-evenly">
+    {callInfo.opponent?.map((v, i) => (
+      <video
+        key={`opponentVideo-${v.roomName}-${i}`}
+        width={1}
+        height={1}
+        playsInline
+        autoPlay
+        muted={false}
+        // ref 변수를 Callback ref로 변경했어요.
+        ref={(ref) => {
+          if (ref) {
+            // DOM 요소에 접근한 값을 Element 배열에 직접 할당해요.
+            videoRefs.current[i] = ref;
+          }
+        }}
+      />
+    ))}
+  </div>
+);
+```
+
+## 4. 결론
+
+결론적으로 DOM 요소에 접근하는 ref를 배열로 사용해야 하는 경우 Callback ref를 이용한다면, **배열에 대해 한 번만 `useRef` 를 호출하는 방법**으로도 간단하게 처리할 수 있어요. 또한, 훅의 규칙을 어기는 일도 발생하지 않아요.
+
+이를 통해
+
+- 코드가 간결해지고
+- 훅의 호출 횟수를 줄일 수 있으며
+- 배열의 크기가 동적으로 변하는 상황에 쉽게 대처할 수 있는 효과를 얻을 수 있어요.
+
+## Reference
+
+- [https://ko.react.dev/learn#using-hooks](https://ko.react.dev/learn#using-hooks)
+- 모던 리액트 Deep Dive(2023, 김용찬, 위키북스)
