@@ -13,18 +13,18 @@ tags:
   - Hooks
 ---
 
-## 1. DOM 요소에 접근하는 ref를 배열로 사용해야 하는 경우
+## 1. DOM 요소에 접근하는 ref 배열
 
 42helloworld 프로젝트에서 `<video>` 태그를 이용하여 음성 통화 기능을 구현하였어요.
 
-음성 통화는 상대방으로부터 `MediaStream` 객체를 전달받아서 `<video>` 태그의 `src` 속성에 추가하는 방식으로 연결할 수 있어요. `<video>` 태그의 DOM 요소에 직접 접근하고 수정하기 위해서 React의 `useRef` 를 사용했어요.
+음성 통화는 상대방으로부터 `MediaStream` 객체를 전달받아서 `<video>` 태그의 `src` 속성에 추가하는 방식으로 연결할 수 있어요. `<video>` DOM 요소에 직접 접근하고 수정하기 위해서 React의 `useRef` 를 사용했어요.
 
-개인 통화는 `<video>` 태그에 해당하는 `ref` 를 하나만 생성하면 되는데, 그룹 통화는 4인이서 진행되기 때문에 `<video>` 태그에 해당하는 `ref` 3개가 필요했고 배열로 관리하였어요.
+개인 통화는 `<video>` 태그에 해당하는 `ref` 를 하나만 생성하면 되는데, 그룹 통화는 4인이서 진행되기 때문에 `<video>` 태그에 해당하는 `ref` 3개가 필요했고 배열로 관리해야 했어요.
 
-**`ref` 를 배열로 사용하는 방법을 두 가지로 생각해봤어요.**
+이 떄, **DOM 요소에 접근하는 `ref` 배열을 구현하는 방법을 두 가지로 생각해봤어요.**
 
-1. `ref<Element>` 를 요소로 하는 배열 (useRef 배열로 표기)
-2. `Element` 를 요소로 하는 배열을 `ref` 로 사용 (Element 배열로 표기)
+1. `ref<Element>` 를 요소로 하는 배열 (이하 useRef 배열로 표기)
+2. `Element` 를 요소로 하는 배열을 `ref` 로 사용 (이하 Element 배열로 표기)
 
 {% include code-header.html %}
 
@@ -44,7 +44,7 @@ const videoRefs: MutableRefObject<HTMLVideoElement[]> = useRef<
 
 두 가지 방법을 둘러보면서 어떤 방법이 가장 좋은지 알아보려고 해요.
 
-## 2. useRef 배열
+## 2. useRef 배열로 구현?
 
 먼저 useRef 배열은 `ref` 객체를 요소로 하는 배열을 사용해요.
 
@@ -120,7 +120,7 @@ for (let i = 0; i < totalNum; i++) {
 
 이런 관점에서 정상적으로 동작하더라도 훅의 규칙을 깨면서까지 사용하는 것은 좋지 않다고 생각해요.
 
-## 3. Element 배열
+## 3. Element 배열로 구현?
 
 이번에는 Element 배열의 경우를 볼게요.
 
@@ -216,17 +216,100 @@ return (
 );
 ```
 
-## 4. 결론
-
-결론적으로 DOM 요소에 접근하는 ref를 배열로 사용해야 하는 경우 Callback ref를 이용한다면, **배열에 대해 한 번만 `useRef` 를 호출하는 방법**으로도 간단하게 처리할 수 있어요. 또한, 훅의 규칙을 어기는 일도 발생하지 않아요.
+결론적으로 DOM 요소에 접근하는 ref를 배열로 사용해야 하는 경우 Callback ref를 이용한다면, **`useRef`를 한 번만 호출하면서** 간단하게 처리할 수 있어요. 또한, 훅의 규칙을 어기는 일도 발생하지 않아요.
 
 이를 통해
 
-- 코드가 간결해지고
+- 코드 중복이 감소하고
 - 훅의 호출 횟수를 줄일 수 있으며
 - 배열의 크기가 동적으로 변하는 상황에 쉽게 대처할 수 있는 효과를 얻을 수 있어요.
 
-## Reference
+## 4. 적용
+
+프로젝트에서 처음에는 useRef 배열을 사용하였어요. 동작하는데에는 문제가 없었지만, 확장성이 좋은 코드를 위해서 리팩토링을 하면서 Callback ref를 이용한 Element 배열로 변경하였어요.
+
+`📂 Call.tsx(Before)`
+
+{% include code-header.html %}
+
+```tsx
+const Call = () => {
+  const videoRefs = [
+    useRef<HTMLVideoElement>(null),
+    useRef<HTMLVideoElement>(null),
+    useRef<HTMLVideoElement>(null),
+  ];
+
+  // ...
+
+  peer[i].on("stream", (currentStream) => {
+    videoRefs[i].current.srcObject = currentStream;
+  });
+
+  // ...
+
+  return (
+    <div className="h-[15%] flex flex-col justify-evenly">
+      {callInfo.opponent?.map((v, i) => (
+        <video
+          key={`opponentVideo-${v.roomName}-${i}`}
+          width={1}
+          height={1}
+          playsInline
+          autoPlay
+          muted={false}
+          ref={videoRefs[i]}
+        />
+      ))}
+    </div>
+  );
+};
+```
+
+`📂 Call.tsx(After)`
+
+{% include code-header.html %}
+
+```tsx
+const Call = () => {
+  // 배열을 ref로 사용했어요.
+  const videoRefs = useRef<HTMLVideoElement[]>([]);
+
+  // ...
+
+  peer[i].on("stream", (currentStream) => {
+    // ref 구성이 바뀜에 따라 적용해줘요.
+    videoRefs.current[i].srcObject = currentStream;
+  });
+
+  // ...
+
+  return (
+    <div className="h-[15%] flex flex-col justify-evenly">
+      {callInfo.opponent?.map((v, i) => (
+        <video
+          key={`opponentVideo-${v.roomName}-${i}`}
+          width={1}
+          height={1}
+          playsInline
+          autoPlay
+          muted={false}
+          // Callback ref를 적용했어요.
+          ref={(ref) => {
+            if (ref) {
+              videoRefs.current[i] = ref;
+            }
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+```
+
+이렇게 변경하면서 코드의 중복이 줄어들었고, 유지보수가 간단해지는 효과를 얻을 수 있었어요.
+
+## 5. Reference
 
 - [https://ko.react.dev/learn#using-hooks](https://ko.react.dev/learn#using-hooks)
 - 모던 리액트 Deep Dive(2023, 김용찬, 위키북스)
