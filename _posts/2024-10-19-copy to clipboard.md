@@ -41,9 +41,7 @@ _Minimal Mistakes의 rouge highlighter 기능을 사용한다는 전제로 구�
 
 ### (1) 복사 버튼 HTML 파일 만들기
 
-`📂 /_includes/code-header.html`
-
-{% include code-header.html %}
+{% include code-header.html title="/_includes/code-header.html" %}
 
 ```html
 <div class="code-header">
@@ -59,9 +57,7 @@ _Minimal Mistakes의 rouge highlighter 기능을 사용한다는 전제로 구�
 
 ### (2) CSS를 추가하여 위치와 스타일 적용하기
 
-`📂 /_sass/minimal-mistakes/_page.scss`
-
-{% include code-header.html %}
+{% include code-header.html title="/_sass/minimal-mistakes/_page.scss" %}
 
 ```css
 .code-header {
@@ -102,9 +98,7 @@ _Minimal Mistakes의 rouge highlighter 기능을 사용한다는 전제로 구�
 
 ### (3) 클립보드에 코드를 복사하는 Javascript 코드를 추가하기
 
-`📂 /assets/scripts/copyCode.js`
-
-{% include code-header.html %}
+{% include code-header.html title="/assets/scripts/copyCode.js" %}
 
 ```js
 const codeBlocks = document.querySelectorAll(
@@ -139,9 +133,7 @@ copyCodeButtons.forEach((copyCodeButton, index) => {
 
 그리고 생성한 `copyCode.js` 코드가 실행될 수 있도록 `/_includes/footer.html`의 최하단에 아래 코드를 추가해 주세요.
 
-`📂 /_includes/footer.html`
-
-{% include code-header.html %}
+{% include code-header.html title="/_includes/footer.html" %}
 
 ```html
 <!-- 파일 최하단에 추가해요. -->
