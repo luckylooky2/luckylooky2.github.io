@@ -578,11 +578,29 @@ body {
   }
 }
 
+.code-filename {
+  font-family: $monospace;
+  color: white;
+  background-color: $base03;
+  padding: 10px 20px;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+}
+
 .code-header {
   position: relative;
   top: 50px;
   right: 10px;
   z-index: 1;
+}
+
+.code-border + .highlighter-rouge {
+  border-radius: $border-radius;
+}
+
+.code-border-with-title + .highlighter-rouge {
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
 }
 
 .copy-code-button {
